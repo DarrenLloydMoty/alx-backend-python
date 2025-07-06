@@ -11,7 +11,7 @@ def stream_users_in_batches(batch_size):
     offset = 0
     while True:
         cursor.execute(
-            f"SELECT * FROM user_data LIMIT {batch_size} OFFSET {offset}"
+            "SELECT * FROM user_data LIMIT %s OFFSET %s", (batch_size, offset)
         )
         rows = cursor.fetchall()
         if not rows:
@@ -28,5 +28,5 @@ def batch_processing(batch_size):
     """
     for batch in stream_users_in_batches(batch_size):  # Loop 1
         for user in batch:  # Loop 2
-            if user['age'] > 25:  # Condition, not a loop
+            if user['age'] > 25:
                 print(user)
